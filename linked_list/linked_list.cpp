@@ -5,22 +5,22 @@
 using namespace std;
 
 template<typename T>
-class Node {
+class LinkedList {
  private:
-	Node* tail;
+	LinkedList* tail;
 	T data;
  public:
-	Node() {
+	LinkedList() {
 		tail = nullptr;
 	}
-	Node(T in) {
+	LinkedList(T in) {
 		data = in;
 		tail = nullptr;
 	}
-	void operator=(Node in) {
+	void operator=(LinkedList in) {
 		data = in.data;
 	}
-	void remove(Node<T>* in=nullptr) {
+	void remove(LinkedList<T>* in=nullptr) {
 		if (!in) {
 			in = this;
 		}
@@ -38,8 +38,24 @@ class Node {
 			tail->append(in);
 		}
 		else {
-			Node<T>* tmp = new Node(in);
+			LinkedList<T>* tmp = new LinkedList(in);
 			this->tail = tmp;
+		}
+	}
+	void prepend(T in) {
+		LinkedList<T>* tmp = new LinkedList(this->data);
+		tmp->tail = this->tail;
+		this->data = in;
+		this->tail = tmp;
+	}
+	void sorpend(T in) {
+		if (this->tail && in>this->data) {
+			this->tail->sorpend(in);
+		}
+		else if (this->tail)
+			this->prepend(in);
+		else {
+			this->append(in);
 		}
 	}	
 	vector<T> output() {
@@ -58,13 +74,19 @@ class Node {
 			tmp.resize(0);
 			return result;
 		}		
-	}	
+	}
+
 };
 
 
 int main() {
-	Node<int> root(1);
-	root.append(5);
+	LinkedList<int> root(1);
+	root.sorpend(5);
+	root.sorpend(10);
+	root.sorpend(19);
+	root.sorpend(20);
+	root.sorpend(6);
+	root.sorpend(22);
 	vector<int> s;
 	s = root.output();
 	for (unsigned int i=0; i<s.size(); i++)
