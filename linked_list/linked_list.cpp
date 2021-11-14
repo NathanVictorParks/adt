@@ -5,32 +5,33 @@
 using namespace std;
 
 template<typename T>
-class LinkedList {
+class Node {
  private:
-	LinkedList* tail;
+	Node* tail;
 	T data;
  public:
-	LinkedList() {
+	Node() {
 		tail = nullptr;
 	}
-	LinkedList(T in) {
+	Node(T in) {
 		data = in;
 		tail = nullptr;
 	}
-	void operator=(LinkedList in) {
+	/*
+	~Node() {
+		(*this).clear();
+	}*/
+	void operator=(Node in) {
 		data = in.data;
 	}
-	void remove(LinkedList<T>* in=nullptr) {
-		if (!in) {
-			in = this;
-		}
-		if (in->tail) {
-			delete &in;
-			remove(in->tail);
-			
+	void clear() {
+		if (this->tail) {
+			delete this;
+			this->tail->clear();
+				
 		}
 		else {
-			delete &in;
+			delete this;
 		}
 	}
 	void append(T in) {
@@ -38,19 +39,19 @@ class LinkedList {
 			tail->append(in);
 		}
 		else {
-			LinkedList<T>* tmp = new LinkedList(in);
+			Node<T>* tmp = new Node(in);
 			this->tail = tmp;
 		}
 	}
 	void prepend(T in) {
-		LinkedList<T>* tmp = new LinkedList(this->data);
+		Node<T>* tmp = new Node(this->data);
 		tmp->tail = this->tail;
 		this->data = in;
 		this->tail = tmp;
 	}
-	void sorpend(T in) {
+	void add(T in) {
 		if (this->tail && in>this->data) {
-			this->tail->sorpend(in);
+			this->tail->add(in);
 		}
 		else if (this->tail)
 			this->prepend(in);
@@ -77,18 +78,45 @@ class LinkedList {
 	}
 
 };
+template<typename T>
+class LinkedList {
+ private:
+ 	int s;
+ 	Node<T> root;
+ public:
+ 	LinkedList() {
+ 		size=0;
+ 	};
+ 	LinkedList(T in) {
+ 		Node<T> tmp(in);
+ 		s = 1;
+ 		root = tmp; 
+ 	}
+ 	int size() {
+ 		return s;
+ 	}
+ 	void prepend(T in) {
+ 		s++;
+ 		root.prepend(in);
+ 	}
+ 	void append(T in) {
+ 		s++;
+ 		root.append(in);
+ 	}
+ 	void add(T in) {
+ 		s++;
+ 		root.add(in);
+ 	}
+ 	void clear() {
+ 		s = 0;
+ 		root.clear();
+ 	} 		
+};
 
 
 int main() {
-	LinkedList<int> root(1);
-	root.sorpend(5);
-	root.sorpend(10);
-	root.sorpend(19);
-	root.sorpend(20);
-	root.sorpend(6);
-	root.sorpend(22);
-	vector<int> s;
-	s = root.output();
-	for (unsigned int i=0; i<s.size(); i++)
-		cout << s[i] << endl;
+	LinkedList<int> l1(5);
+	l1.add(7);
+	l1.add(10);
+	cout << l1.size();
 }
