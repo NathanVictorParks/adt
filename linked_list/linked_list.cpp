@@ -76,7 +76,6 @@ class Node {
 			return result;
 		}		
 	}
-
 };
 template<typename T>
 class LinkedList {
@@ -110,7 +109,7 @@ class LinkedList {
  	void clear() {
  		s = 0;
  		root.clear();
- 	} 		
+ 	}		
 };
 
 
